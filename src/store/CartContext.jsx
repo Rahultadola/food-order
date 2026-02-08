@@ -32,27 +32,24 @@ function cartReducer(state, action) {
 	if( action.type === 'REMOVE_ITEM' ) {
 		const itemIndex = state.items.findIndex(item => item.id === action.id)
 
-		console.log(itemIndex, action.id, state.items)
-		if (itemIndex >= 0) {
-			if ( state.items[itemIndex].quantity === 1 ) {
-				return {
-					...state,
-					items: state.items.splice(itemIndex, 1)
-				}
+		if (itemIndex > -1) {
+			const existingItem = state.items[itemIndex];
+			const updatedItems = [...state.items]; // Create a shallow copy of the array
+
+			if (existingItem.quantity === 1) {
+				// Remove the item using filter (non-mutating)
+				const filteredItems = state.items.filter(item => item.id !== action.id);
+				return { ...state, items: filteredItems };
 			} else {
-				return { 
-					...state, 
-					items: [ 
-						...state.items.filter((itm, i) => i !== itemIndex), 
-						{ 
-							...state.items[itemIndex], 
-							quantity: state.items[itemIndex].quantity - 1 
-						} 
-					]
-				}	
+				// Update the quantity by creating a NEW object
+				const updatedItem = { 
+					...existingItem, 
+					quantity: existingItem.quantity - 1 
+				};
+				updatedItems[itemIndex] = updatedItem;
+
+				return { ...state, items: updatedItems };
 			}
-		} else {
-			return { ...state }
 		}
 	}
 
