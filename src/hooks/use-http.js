@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const hostURL = "http://localhost:3000/food-order/"
+const hostURL = "https://combined-express-portfolio.vercel.app/food-order/"
 
 
 async function sendHTTPRequest(url, config) {
