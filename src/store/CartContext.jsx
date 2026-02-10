@@ -16,9 +16,10 @@ function cartReducer(state, action) {
 		if( itemIndex > -1) {
 			return { 
 				...state, 
-				items: [ 
-					...state.items.filter((itm) => itm.id !== action.item.id), 
-					{ ...state.items[itemIndex], quantity: state.items[itemIndex].quantity + 1 } ]
+				items: state.items.map((itm, index) => index === itemIndex ? {
+							...itm, quantity: itm.quantity + 1
+						} : itm
+					),
 			}
 
 		} else {
